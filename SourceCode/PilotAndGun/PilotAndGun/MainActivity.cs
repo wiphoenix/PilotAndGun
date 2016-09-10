@@ -13,7 +13,7 @@ using CocosSharp;
 
 namespace PilotAndGun
 {
-    [Activity(Label = "PilotAndGun", MainLauncher = true, Icon = "@drawable/icon",
+    [Activity(Label = "PilotAndGun", MainLauncher = true, Icon = "@drawable/icon", Theme = "@android:style/Theme.Black.NoTitleBar.Fullscreen",
         AlwaysRetainTaskState = true,
         LaunchMode = LaunchMode.SingleInstance,
         ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize | ConfigChanges.Keyboard | ConfigChanges.KeyboardHidden)]
@@ -25,6 +25,12 @@ namespace PilotAndGun
         {
             base.OnCreate(bundle);
 
+            Window.DecorView.SystemUiVisibility = (StatusBarVisibility)(SystemUiFlags.LayoutStable |
+                SystemUiFlags.LayoutHideNavigation |
+                SystemUiFlags.Fullscreen |
+                SystemUiFlags.HideNavigation |
+                SystemUiFlags.Immersive);
+
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
@@ -32,6 +38,7 @@ namespace PilotAndGun
             // and attach the view created event to it
             CCGameView gameView = (CCGameView)FindViewById(Resource.Id.GameView);
             gameView.ViewCreated += LoadGame;
+
         }
 
         void LoadGame(object sender, EventArgs e)
@@ -43,8 +50,8 @@ namespace PilotAndGun
                 var contentSearchPaths = new List<string>() { "Fonts", "Sounds" };
                 CCSizeI viewSize = gameView.ViewSize;
 
-                int width = 1024;
-                int height = 768;
+                int width = 768;
+                int height = 1280;
 
                 // Set world dimensions
                 gameView.DesignResolution = new CCSizeI(width, height);
