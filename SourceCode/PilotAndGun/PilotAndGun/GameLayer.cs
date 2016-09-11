@@ -9,28 +9,40 @@ namespace PilotAndGun
     {
 
         // Define a label variable
-        CCLabel label;
+        CCSprite player;
 
-        public GameLayer() : base(CCColor4B.Blue)
+        public GameLayer() : base(CCColor4B.Black)
         {
 
-            // create and initialize a Label
-            label = new CCLabel("Hello CocosSharp", "Fonts/MarkerFelt", 22, CCLabelFormat.SpriteFont);
+            //// create and initialize a Label
+            //label = new CCLabel("Hello CocosSharp", "Fonts/MarkerFelt", 22, CCLabelFormat.SpriteFont);
 
-            // add the label as a child to this Layer
-            AddChild(label);
+            //// add the label as a child to this Layer
+            //AddChild(label);
 
+            
+
+        }
+
+        private void AddPlayer()
+        {
+            var sprSheet = new CCSpriteSheet("Animations/Player.plist");
+            var flyingAnimation = new CCAnimation(sprSheet.Frames, 0.1f);
+            var flyingRepeatAnimation = new CCRepeatForever(new CCAnimate(flyingAnimation));
+
+            player = new CCSprite(sprSheet.Frames[0]) { Name = "Player" };
+            player.AnchorPoint = new CCPoint(0.5f, 0.5f);
+            player.RunAction(flyingRepeatAnimation);
+
+            player.Position = new CCPoint(VisibleBoundsWorldspace.Center.X, player.ContentSize.Height / 2);
+            AddChild(player);
         }
 
         protected override void AddedToScene()
         {
             base.AddedToScene();
 
-            // Use the bounds to layout the positioning of our drawable assets
-            var bounds = VisibleBoundsWorldspace;
-
-            // position the label on the center of the screen
-            label.Position = bounds.Center;
+            AddPlayer();
 
             // Register for touch events
             var touchListener = new CCEventListenerTouchAllAtOnce();
