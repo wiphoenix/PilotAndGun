@@ -72,9 +72,7 @@ namespace PilotAndGun
 
                 gameView.ContentManager.SearchPaths = contentSearchPaths;
 
-                CCScene gameScene = new CCScene(gameView);
-                gameScene.AddLayer(new GameLayer());
-                gameView.RunWithScene(gameScene);
+                gameView.RunWithScene(HomeLayer.HomeScene(gameView));
             }
         }
     }
