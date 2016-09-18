@@ -2,60 +2,70 @@ using System;
 using System.Collections.Generic;
 using CocosSharp;
 using Microsoft.Xna.Framework;
+using PilotAndGun.Classes;
 
 namespace PilotAndGun
 {
     public class GameLayer : CCLayerColor
     {
+        private const float MOVE_SPEED = 350.0f;
+        private const string SCORE_CONTENT = "Score: ";
 
-        // Define a label variable
-        CCSprite player;
+        long score = 0;
+        CCLabel lblScore;
+        Player player;
+
+        List<CCSprite> visibleEnemies;
+        List<CCSprite> visileEnemyBullets;
+        List<CCSprite> visiblePlayerBullets;
+
+        private float rightBoundX;
+        private float leftBoundX;
 
         public GameLayer() : base(CCColor4B.Black)
         {
-
-            //// create and initialize a Label
-            //label = new CCLabel("Hello CocosSharp", "Fonts/MarkerFelt", 22, CCLabelFormat.SpriteFont);
-
-            //// add the label as a child to this Layer
-            //AddChild(label);
-
-            
-
-        }
-
-        private void AddPlayer()
-        {
-            var sprSheet = new CCSpriteSheet("Animations/Player.plist");
-            var flyingAnimation = new CCAnimation(sprSheet.Frames, 0.1f);
-            var flyingRepeatAnimation = new CCRepeatForever(new CCAnimate(flyingAnimation));
-
-            player = new CCSprite(sprSheet.Frames[0]) { Name = "Player" };
-            player.AnchorPoint = new CCPoint(0.5f, 0.5f);
-            player.RunAction(flyingRepeatAnimation);
-
-            player.Position = new CCPoint(VisibleBoundsWorldspace.Center.X, player.ContentSize.Height / 2);
+            player = new Player();
             AddChild(player);
+
+            lblScore = new CCLabel(SCORE_CONTENT + score, "Fonts/MarkerFelt", 22, CCLabelFormat.SpriteFont);
+            lblScore.AnchorPoint = new CCPoint(0f, 1f);
+            lblScore.Schedule(s => { lblScore.Text = SCORE_CONTENT + score; });
+            AddChild(lblScore);
         }
 
         protected override void AddedToScene()
         {
             base.AddedToScene();
 
-            AddPlayer();
+            player.Position = new CCPoint(VisibleBoundsWorldspace.Center.X, player.ContentSize.Height / 2);
+            lblScore.Position = new CCPoint(0 + 10, VisibleBoundsWorldspace.MaxY - 10);
 
-            // Register for touch events
+            leftBoundX = player.ContentSize.Width / 2;
+            rightBoundX = VisibleBoundsWorldspace.MaxX - player.ContentSize.Width / 2;
+
             var touchListener = new CCEventListenerTouchAllAtOnce();
-            touchListener.OnTouchesEnded = OnTouchesEnded;
+            touchListener.OnTouchesBegan = OnTouchesBegan;
+            touchListener.OnTouchesMoved = OnTouchesMoved;
             AddEventListener(touchListener, this);
         }
-
-        void OnTouchesEnded(List<CCTouch> touches, CCEvent touchEvent)
+        private void OnTouchesBegan(List<CCTouch> touches, CCEvent touchEvent)
         {
-            if (touches.Count > 0)
-            {
-                // Perform touch handling here
-            }
+            var location = touches[0].LocationOnScreen;
+            location = WorldToScreenspace(location);
+        }
+
+        private void OnTouchesMoved(List<CCTouch> touches, CCEvent touchEvent)
+        {
+            player.StopAllActions();
+            var location = touches[0].LocationOnScreen;
+            location = WorldToScreenspace(location);
+
+            float x = location.X;
+            if (x > rightBoundX)
+                x = rightBoundX;
+            if (x < leftBoundX)
+                x = leftBoundX;
+            player.Position = new CCPoint(x, player.Position.Y);
         }
 
         public static CCScene GameScene(CCGameView gameView)
