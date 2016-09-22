@@ -16,17 +16,19 @@ namespace PilotAndGunPortable
 
         private const int NO_OF_ENEMIES_IN_A_BATCH = 5;
 
+        private const int HEALTH_BAR_INDEX = 1;
         private const int PAUSE_BUTTON_INDEX = 50;
         private const int ENEMY_INDEX = 10;
         private const int PLAYER_INDEX = 10;
-        private const int PLAYER_BULLET_INDEX = 1;
-        private const int ENEMY_BULLET_INDEX = 1;
+        private const int PLAYER_BULLET_INDEX = 2;
+        private const int ENEMY_BULLET_INDEX = 2;
 
         int noOfBatch;
 
         long score = 0;
         CCLabel lblScore;
         Player player;
+        PlayerHealthBar healthBar;
 
         List<CCSprite> visibleEnemies = new List<CCSprite>();
         List<CCSprite> visileEnemyBullets = new List<CCSprite>();
@@ -46,6 +48,9 @@ namespace PilotAndGunPortable
         {
             player = new Player();
             AddChild(player, PLAYER_INDEX);
+            healthBar = new PlayerHealthBar();
+            AddChild(healthBar, HEALTH_BAR_INDEX);
+
 
             lblScore = new CCLabel(SCORE_CONTENT + score, "Fonts/MarkerFelt", 22, CCLabelFormat.SpriteFont);
             lblScore.AnchorPoint = new CCPoint(0f, 1f);
@@ -103,7 +108,7 @@ namespace PilotAndGunPortable
         private CCSprite AddBoss()
         {
             Boss boss = new Boss();
-            float y = VisibleBoundsWorldspace.MaxY - boss.ContentSize.Height / 2 - 10;
+            float y = VisibleBoundsWorldspace.MaxY - boss.ContentSize.Height - 10;
             CCPoint left = new CCPoint(boss.ContentSize.Width / 2, y);
             CCPoint right = new CCPoint(VisibleBoundsWorldspace.MaxX - boss.ContentSize.Width / 2, y);
             boss.Position = left;
@@ -171,6 +176,7 @@ namespace PilotAndGunPortable
         {
             base.AddedToScene();
             player.Position = new CCPoint(VisibleBoundsWorldspace.Center.X, player.ContentSize.Height / 2);
+            healthBar.Position = CCPoint.Zero;
             lblScore.Position = new CCPoint(0 + 10, VisibleBoundsWorldspace.MaxY - 10);
             mnuPause.Position = new CCPoint(VisibleBoundsWorldspace.MaxX - mnuPause.ContentSize.Width - 10, VisibleBoundsWorldspace.MaxY - mnuPause.ContentSize.Height - 10);
 

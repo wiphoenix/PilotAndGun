@@ -33,7 +33,9 @@
   <ItemGroup>
     <Compile Include="AboutLayer.cs" />
     <Compile Include="Classes\Boss.cs" />
+    <Compile Include="Classes\BossHealthBar.cs" />
     <Compile Include="Classes\EnemyBullet.cs" />
+    <Compile Include="Classes\PlayerHealthBar.cs" />
     <Compile Include="Classes\PlayerBullet.cs" />
     <Compile Include="Classes\Enemy.cs" />
     <Compile Include="Classes\Player.cs" />

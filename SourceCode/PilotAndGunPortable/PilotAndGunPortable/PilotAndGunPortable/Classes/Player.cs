@@ -5,8 +5,6 @@ namespace PilotAndGunPortable.Classes
 {
     public class Player : CCSprite
     {
-        public int Health { get; } = 6;
-
         public Player()
         {
             var sprSheet = new CCSpriteSheet("Animations/Player.plist");

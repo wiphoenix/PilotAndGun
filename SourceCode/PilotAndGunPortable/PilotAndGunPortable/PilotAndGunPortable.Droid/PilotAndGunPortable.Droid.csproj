@@ -198,6 +198,30 @@
   <ItemGroup>
     <AndroidAsset Include="Assets\Content\Images\Ld\btnBack.png" />
   </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\Content\Images\Hd\playerHP.plist" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\Content\Images\Hd\playerHP.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\Content\Images\Ld\playerHP.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\Content\Images\Ld\playerHP.plist" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\Content\Images\Hd\enemyHP.plist" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\Content\Images\Hd\enemyHP.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\Content\Images\Ld\enemyHP.plist" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\Content\Images\Ld\enemyHP.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
      Other similar extension points exist, see Microsoft.Common.targets.
