@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AboutLayer.cs" />
-    <Compile Include="Classes\Bullet.cs" />
+    <Compile Include="Classes\PlayerBullet.cs" />
     <Compile Include="Classes\Enemy.cs" />
     <Compile Include="Classes\Player.cs" />
     <Compile Include="GameDelegate.cs" />

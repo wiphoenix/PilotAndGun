@@ -45,16 +45,14 @@ namespace PilotAndGunPortable
             lblScore.Schedule(s => { lblScore.Text = SCORE_CONTENT + score; });
             AddChild(lblScore);
 
+            //check collision
+            Schedule(s => CheckCollision());
+            
             //player shoots bullets
             Schedule(s => visiblePlayerBullets.Add(AddPlayerBullet()), SHOOTING_SPEED);
 
-            //check collision
-            Schedule(s => CheckCollision());
-
             //spawn enemies
             Schedule(s => SpawnEnemies(), 2f);
-
-            //ScheduleOnce(s => visibleEnemies.Add(AddEnemy(true)), 5f);
         }
 
         private void CheckCollision()
@@ -96,9 +94,9 @@ namespace PilotAndGunPortable
             return enemy;
         }
 
-        private Bullet AddPlayerBullet()
+        private PlayerBullet AddPlayerBullet()
         {
-            Bullet bullet = new Bullet();
+            PlayerBullet bullet = new PlayerBullet();
             bullet.Position = new CCPoint(player.Position.X, player.Position.Y + player.ContentSize.Height / 2);
             AddChild(bullet, BULLET_INDEX);
 

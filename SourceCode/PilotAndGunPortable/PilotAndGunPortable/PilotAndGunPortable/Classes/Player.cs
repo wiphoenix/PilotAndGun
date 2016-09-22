@@ -5,7 +5,7 @@ namespace PilotAndGunPortable.Classes
 {
     public class Player : CCSprite
     {
-        private int health = 100;
+        public int Health { get; } = 6;
 
         public Player()
         {
@@ -18,14 +18,6 @@ namespace PilotAndGunPortable.Classes
 
             AnchorPoint = new CCPoint(0.5f, 0.5f);
             RunAction(flyingRepeatAnimation);
-        }
-
-        public int Health
-        {
-            get
-            {
-                return health;
-            }
         }
     }
 }
