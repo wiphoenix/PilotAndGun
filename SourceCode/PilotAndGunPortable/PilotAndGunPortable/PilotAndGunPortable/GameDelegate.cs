@@ -17,8 +17,8 @@ namespace PilotAndGunPortable
                 var contentSearchPaths = new List<string>() { "Fonts", "Sounds" };
                 CCSizeI viewSize = gameView.ViewSize;
 
-                int width = 1024;
-                int height = 768;
+                int width = 768;
+                int height = 1280;
 
                 // Set world dimensions
                 gameView.DesignResolution = new CCSizeI(width, height);
@@ -39,9 +39,7 @@ namespace PilotAndGunPortable
 
                 gameView.ContentManager.SearchPaths = contentSearchPaths;
 
-                CCScene gameScene = new CCScene(gameView);
-                gameScene.AddLayer(new GameLayer());
-                gameView.RunWithScene(gameScene);
+                gameView.RunWithScene(HomeLayer.HomeScene(gameView));
             }
         }
 	
