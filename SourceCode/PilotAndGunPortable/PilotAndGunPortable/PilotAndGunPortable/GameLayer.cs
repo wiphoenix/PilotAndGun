@@ -16,6 +16,7 @@ namespace PilotAndGunPortable
 
         private const int NO_OF_ENEMIES_IN_A_BATCH = 5;
 
+        private const int PAUSE_BUTTON_INDEX = 50;
         private const int ENEMY_INDEX = 10;
         private const int PLAYER_INDEX = 10;
         private const int PLAYER_BULLET_INDEX = 1;
@@ -38,6 +39,9 @@ namespace PilotAndGunPortable
 
         Random random = new Random();
 
+        CCMenu mnuPause;
+        CCMenuItemImage mniPause;
+
         public GameLayer() : base(CCColor4B.Black)
         {
             player = new Player();
@@ -47,6 +51,16 @@ namespace PilotAndGunPortable
             lblScore.AnchorPoint = new CCPoint(0f, 1f);
             lblScore.Schedule(s => { lblScore.Text = SCORE_CONTENT + score; });
             AddChild(lblScore);
+
+            mniPause = new CCMenuItemImage(new CCSprite("btnPause.png"), new CCSprite("btnPauseSelected.png"), delegate (object obj)
+            {
+                GameView.Paused = !GameView.Paused;
+            });
+
+            mnuPause = new CCMenu(new CCMenuItem[] { mniPause });
+            mnuPause.AlignItemsVertically();
+            mnuPause.AnchorPoint = CCPoint.AnchorUpperRight;
+            AddChild(mnuPause, PAUSE_BUTTON_INDEX);
 
             //check collision
             Schedule(s => CheckCollision());
@@ -156,9 +170,9 @@ namespace PilotAndGunPortable
         protected override void AddedToScene()
         {
             base.AddedToScene();
-
             player.Position = new CCPoint(VisibleBoundsWorldspace.Center.X, player.ContentSize.Height / 2);
             lblScore.Position = new CCPoint(0 + 10, VisibleBoundsWorldspace.MaxY - 10);
+            mnuPause.Position = new CCPoint(VisibleBoundsWorldspace.MaxX - mnuPause.ContentSize.Width - 10, VisibleBoundsWorldspace.MaxY - mnuPause.ContentSize.Height - 10);
 
             leftBoundX = player.ContentSize.Width / 2;
             rightBoundX = VisibleBoundsWorldspace.MaxX - player.ContentSize.Width / 2;
@@ -171,8 +185,8 @@ namespace PilotAndGunPortable
 
         private void OnTouchesBegan(List<CCTouch> touches, CCEvent touchEvent)
         {
-            var location = touches[0].LocationOnScreen;
-            location = WorldToScreenspace(location);
+            var location = touches[0].Location;
+            CCNode currentTarget = touchEvent.CurrentTarget;
         }
 
         private void OnTouchesMoved(List<CCTouch> touches, CCEvent touchEvent)
