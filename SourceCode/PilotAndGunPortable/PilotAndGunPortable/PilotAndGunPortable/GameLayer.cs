@@ -72,8 +72,37 @@ namespace PilotAndGunPortable
 
             noOfBatch++;
 
-            bool direction = random.Next(2) == 0;
-            Schedule(s => visibleEnemies.Add(AddEnemy(direction)), 1.0f, NO_OF_ENEMIES_IN_A_BATCH - 1, 0);
+            //boss appears each 10 batchs
+            if (noOfBatch % 10 == 0)
+            {
+                //spawn a boss
+                ScheduleOnce(s => visibleEnemies.Add(AddBoss()), 0);
+            }
+            else
+            {
+                //spawn a batch
+                bool direction = random.Next(2) == 0;
+                Schedule(s => visibleEnemies.Add(AddEnemy(direction)), 1.0f, NO_OF_ENEMIES_IN_A_BATCH - 1, 0);
+            }
+        }
+
+        private CCSprite AddBoss()
+        {
+            Boss boss = new Boss();
+            float y = VisibleBoundsWorldspace.MaxY - boss.ContentSize.Height / 2 - 10;
+            CCPoint left = new CCPoint(boss.ContentSize.Width / 2, y);
+            CCPoint right = new CCPoint(VisibleBoundsWorldspace.MaxX - boss.ContentSize.Width / 2, y);
+            boss.Position = left;
+
+            var moveRight = new CCMoveTo(3f, right);
+            var moveLeft = new CCMoveTo(3f, left);
+            var forever = new CCRepeatForever(new CCFiniteTimeAction[] { moveRight, moveLeft });
+
+            AddChild(boss, ENEMY_INDEX);
+
+            boss.RunAction(forever);
+            boss.Schedule(s => visileEnemyBullets.Add(AddEnemyBullet(boss)), 1f);
+            return boss;
         }
 
         private CCSprite AddEnemy(bool leftToRight)
