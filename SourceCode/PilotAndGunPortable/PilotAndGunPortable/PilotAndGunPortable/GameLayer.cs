@@ -10,13 +10,16 @@ namespace PilotAndGunPortable
     {
         private const string SCORE_CONTENT = "Score: ";
 
-        private const float SHOOTING_SPEED = 0.5f;
+        private const float PLAYER_SHOOTING_INTEVAL = 0.5f;
+        private const float ENEMY_SHOOTING_INTERVAL = 2f;
+        private const float ENEMY_BULLET_SPEED = 300f;
 
         private const int NO_OF_ENEMIES_IN_A_BATCH = 5;
 
         private const int ENEMY_INDEX = 10;
         private const int PLAYER_INDEX = 10;
-        private const int BULLET_INDEX = 1;
+        private const int PLAYER_BULLET_INDEX = 1;
+        private const int ENEMY_BULLET_INDEX = 1;
 
         int noOfBatch;
 
@@ -47,9 +50,9 @@ namespace PilotAndGunPortable
 
             //check collision
             Schedule(s => CheckCollision());
-            
+
             //player shoots bullets
-            Schedule(s => visiblePlayerBullets.Add(AddPlayerBullet()), SHOOTING_SPEED);
+            Schedule(s => visiblePlayerBullets.Add(AddPlayerBullet()), PLAYER_SHOOTING_INTEVAL);
 
             //spawn enemies
             Schedule(s => SpawnEnemies(), 2f);
@@ -59,6 +62,7 @@ namespace PilotAndGunPortable
         {
             visiblePlayerBullets.RemoveAll(spr => spr.Parent == null);
             visibleEnemies.RemoveAll(spr => spr.Parent == null);
+            visileEnemyBullets.RemoveAll(spr => spr.Parent == null);
         }
 
         private void SpawnEnemies()
@@ -91,14 +95,29 @@ namespace PilotAndGunPortable
             AddChild(enemy, ENEMY_INDEX);
 
             enemy.RunActions(moveEnemy, moveOutOfView);
+            enemy.ScheduleOnce(s => visileEnemyBullets.Add(AddEnemyBullet(enemy)), random.Next(1, 3));
             return enemy;
+        }
+
+        private EnemyBullet AddEnemyBullet(CCSprite sender)
+        {
+            EnemyBullet bullet = new EnemyBullet();
+            bullet.Position = new CCPoint(sender.Position.X, sender.Position.Y - sender.ContentSize.Height / 2);
+            AddChild(bullet, ENEMY_BULLET_INDEX);
+
+            CCPoint target = CCPoint.IntersectPoint(bullet.Position, player.Position, CCPoint.Zero, new CCPoint(VisibleBoundsWorldspace.MaxX, 0));
+            float distance = CCPoint.Distance(bullet.Position, target);
+
+            var moveBullet = new CCMoveTo(distance / ENEMY_BULLET_SPEED, target);
+            bullet.RunActions(moveBullet, moveOutOfView);
+            return bullet;
         }
 
         private PlayerBullet AddPlayerBullet()
         {
             PlayerBullet bullet = new PlayerBullet();
             bullet.Position = new CCPoint(player.Position.X, player.Position.Y + player.ContentSize.Height / 2);
-            AddChild(bullet, BULLET_INDEX);
+            AddChild(bullet, PLAYER_BULLET_INDEX);
 
             var moveBullet = new CCMoveTo(5.0f, new CCPoint(bullet.Position.X, VisibleBoundsWorldspace.MaxY));
             bullet.RunActions(moveBullet, moveOutOfView);
@@ -130,8 +149,7 @@ namespace PilotAndGunPortable
         private void OnTouchesMoved(List<CCTouch> touches, CCEvent touchEvent)
         {
             player.StopAllActions();
-            var location = touches[0].LocationOnScreen;
-            location = WorldToScreenspace(location);
+            var location = touches[0].Location;
 
             float x = location.X;
             if (x > rightBoundX)
