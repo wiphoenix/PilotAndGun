@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PilotAndGunPortable.Classes
 {
-    class BossHealthBar : CCSprite
+    public class BossHealthBar : CCSprite
     {
         CCSpriteSheet sprSheet;
         public int Health { get; private set; } = 7;
@@ -24,9 +24,9 @@ namespace PilotAndGunPortable.Classes
 
         public void Decrease(int damage)
         {
-            if (damage > Health)
-                Health = 0;
             Health -= damage;
+            if (Health < 0)
+                Health = 0;
             SpriteFrame = sprSheet.Frames[Health];
         }
 

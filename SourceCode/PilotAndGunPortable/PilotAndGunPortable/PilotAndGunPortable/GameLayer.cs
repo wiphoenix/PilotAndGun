@@ -31,8 +31,8 @@ namespace PilotAndGunPortable
         PlayerHealthBar healthBar;
 
         List<CCSprite> visibleEnemies = new List<CCSprite>();
-        List<CCSprite> visileEnemyBullets = new List<CCSprite>();
-        List<CCSprite> visiblePlayerBullets = new List<CCSprite>();
+        List<EnemyBullet> visileEnemyBullets = new List<EnemyBullet>();
+        List<PlayerBullet> visiblePlayerBullets = new List<PlayerBullet>();
 
         private float rightBoundX;
         private float leftBoundX;
@@ -77,11 +77,73 @@ namespace PilotAndGunPortable
             Schedule(s => SpawnEnemies(), 2f);
         }
 
-        private void CheckCollision()
+        private void RemoveNoParentNodes()
         {
+            //remove invisible nodes
             visiblePlayerBullets.RemoveAll(spr => spr.Parent == null);
             visibleEnemies.RemoveAll(spr => spr.Parent == null);
             visileEnemyBullets.RemoveAll(spr => spr.Parent == null);
+        }
+
+        private void CheckCollision()
+        {
+            RemoveNoParentNodes();
+
+            //check if player intersects with enemy bullets
+            foreach (EnemyBullet eb in visileEnemyBullets)
+            {
+                bool hit = eb.BoundingBoxTransformedToParent.IntersectsRect(player.BoundingBoxTransformedToParent);
+                if (hit)
+                {
+                    eb.RemoveFromParent();
+                    healthBar.Decrease(eb.Damage);
+                }
+            }
+            //check if player intersects with enemies
+            foreach (CCSprite enemy in visibleEnemies)
+            {
+                bool hit = enemy.BoundingBoxTransformedToParent.IntersectsRect(player.BoundingBoxTransformedToParent);
+                if (hit)
+                {
+                    enemy.RemoveFromParent();
+                    healthBar.Decrease(1);
+                }
+            }
+
+            //check if enemies intersects with player bullets
+            foreach (PlayerBullet pb in visiblePlayerBullets)
+            {
+                foreach (CCSprite enemy in visibleEnemies)
+                {
+                    bool hit = pb.BoundingBoxTransformedToParent.IntersectsRect(enemy.BoundingBoxTransformedToParent);
+                    if (hit)
+                    {
+                        pb.RemoveFromParent();
+                        if (enemy is Enemy)
+                        {
+                            enemy.RemoveFromParent();
+                            score += (enemy as Enemy).Score;
+                        }
+                        else
+                        {
+                            Boss b = enemy as Boss;
+                            b.HealthBar.Decrease(1);
+                            if (b.HealthBar.Health == 0)
+                            {
+                                b.RemoveFromParent();
+                                score += b.Score;
+                            }
+                        }
+                    }
+                }
+            }
+
+            //check GAME END
+            if (healthBar.Health == 0)
+                GameView.Director.PushScene(ScoreLayer.ScoreScene(GameView));
+
+            RemoveNoParentNodes();
+
         }
 
         private void SpawnEnemies()

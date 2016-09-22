@@ -24,9 +24,9 @@ namespace PilotAndGunPortable.Classes
 
         public void Decrease(int damage)
         {
-            if (damage > Health)
-                Health = 0;
             Health -= damage;
+            if (Health < 0)
+                Health = 0;
             SpriteFrame = sprSheet.Frames[Health];
         }
 

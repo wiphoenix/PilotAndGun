@@ -13,11 +13,16 @@ namespace PilotAndGunPortable.Classes
 
         public int Score { get; } = 7;
 
-        public CCSprite HealthBar
+        public BossHealthBar HealthBar
         {
             get
             {
                 return healthBar;
+            }
+
+            private set
+            {
+                healthBar = value;
             }
         }
 
