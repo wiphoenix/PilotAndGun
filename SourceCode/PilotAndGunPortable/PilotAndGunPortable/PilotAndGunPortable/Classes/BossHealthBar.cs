@@ -10,7 +10,7 @@ namespace PilotAndGunPortable.Classes
     public class BossHealthBar : CCSprite
     {
         CCSpriteSheet sprSheet;
-        public int Health { get; private set; } = 7;
+        public int Health { get; private set; } = 8;
 
         public BossHealthBar()
         {

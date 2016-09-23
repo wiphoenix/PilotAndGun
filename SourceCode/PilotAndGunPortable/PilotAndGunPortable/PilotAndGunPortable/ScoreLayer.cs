@@ -7,10 +7,12 @@ namespace PilotAndGunPortable
         // Define a label variable
         CCSprite background;
 
+
         CCMenu mnuBack;
         CCMenuItemImage mniBack;
 
         CCSprite sprCoin;
+        CCLabel label;
 
         public ScoreLayer() : base(CCColor4B.Blue)
         {
@@ -36,6 +38,13 @@ namespace PilotAndGunPortable
             sprCoin.RunAction(spinningRepeatAnimation);
 
             AddChild(sprCoin);
+
+            label = new CCLabel("High scores", "Fonts/MarkerFelt", 22, CCLabelFormat.SpriteFont);
+            AddChild(label);
+        }
+
+        public void AddScore(long score)
+        {
         }
 
         protected override void AddedToScene()
@@ -48,6 +57,8 @@ namespace PilotAndGunPortable
             mnuBack.Position = new CCPoint(VisibleBoundsWorldspace.MaxX - mnuBack.ContentSize.Width / 2 - 10, VisibleBoundsWorldspace.MaxY - mnuBack.ContentSize.Height / 2 - 10);
 
             sprCoin.Position = new CCPoint(VisibleBoundsWorldspace.Center.X, VisibleBoundsWorldspace.MaxY - sprCoin.ContentSize.Height / 2 - 10);
+
+            label.Position = new CCPoint(sprCoin.Position.X, sprCoin.Position.Y - sprCoin.ContentSize.Height);
         }
 
         public static CCScene ScoreScene(CCGameView gameView)

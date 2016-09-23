@@ -11,7 +11,7 @@ namespace PilotAndGunPortable.Classes
     {
         private BossHealthBar healthBar;
 
-        public int Score { get; } = 7;
+        public int Score { get; } = 8;
 
         public BossHealthBar HealthBar
         {

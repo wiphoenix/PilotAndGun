@@ -124,6 +124,21 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
+            <key>enemyHP8.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{200,30}</string>
+                <key>spriteSourceSize</key>
+                <string>{200,30}</string>
+                <key>textureRect</key>
+                <string>{{1600,0},{200,30}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
         </dict>
         <key>metadata</key>
         <dict>
@@ -136,9 +151,9 @@
             <key>realTextureFileName</key>
             <string>enemyHP.png</string>
             <key>size</key>
-            <string>{1600,30}</string>
+            <string>{1800,30}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:1179ddb5f4f5ae8e22b7193888a53dc5:6ba1ae65bbd74a319683705e9ad2b399:b8e675ff99fdfefb9d0e413c106cf885$</string>
+            <string>$TexturePacker:SmartUpdate:766cee65d282991269d24a6023f617fc:fb33d180d57fd74f423d78876efe1029:b8e675ff99fdfefb9d0e413c106cf885$</string>
             <key>textureFileName</key>
             <string>enemyHP.png</string>
         </dict>

@@ -17,6 +17,7 @@ namespace PilotAndGunPortable
         private const int NO_OF_ENEMIES_IN_A_BATCH = 5;
 
         private const int BACKGROUND_INDEX = 0;
+        private const int SCORE_INDEX = 1;
         private const int HEALTH_BAR_INDEX = 1;
         private const int PAUSE_BUTTON_INDEX = 50;
         private const int ENEMY_INDEX = 10;
@@ -58,7 +59,7 @@ namespace PilotAndGunPortable
             lblScore = new CCLabel(SCORE_CONTENT + score, "Fonts/MarkerFelt", 22, CCLabelFormat.SpriteFont);
             lblScore.AnchorPoint = new CCPoint(0f, 1f);
             lblScore.Schedule(s => { lblScore.Text = SCORE_CONTENT + score; });
-            AddChild(lblScore);
+            AddChild(lblScore, SCORE_INDEX);
 
             mniPause = new CCMenuItemImage(new CCSprite("btnPause.png"), new CCSprite("btnPauseSelected.png"), delegate (object obj)
             {
