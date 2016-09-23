@@ -1,5 +1,7 @@
+using CocosSharp;
 using Foundation;
 using UIKit;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace PilotAndGunPortable.iOS
 {
@@ -9,6 +11,11 @@ namespace PilotAndGunPortable.iOS
     public class AppDelegate : UIApplicationDelegate
     {
         // class-level declarations
+
+        UIWindow window;
+        public static UIStoryboard Storyboard = UIStoryboard.FromName("MainStoryboard", null);
+        public static UIViewController initialViewController;
+
 
         public override UIWindow Window
         {
@@ -20,9 +27,17 @@ namespace PilotAndGunPortable.iOS
         {
             // Override point for customization after application launch.
             // If not required for your application you can safely delete this method
+            window = new UIWindow(UIScreen.MainScreen.Bounds);
 
+            initialViewController = Storyboard.InstantiateInitialViewController() as UIViewController;
+
+            Window.RootViewController = initialViewController;
+            Window.MakeKeyAndVisible();
             return true;
         }
+
+
+
 
         public override void OnResignActivation(UIApplication application)
         {
