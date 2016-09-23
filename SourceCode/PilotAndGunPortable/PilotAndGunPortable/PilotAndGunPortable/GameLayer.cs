@@ -59,7 +59,7 @@ namespace PilotAndGunPortable
 
             mniPause = new CCMenuItemImage(new CCSprite("btnPause.png"), new CCSprite("btnPauseSelected.png"), delegate (object obj)
             {
-                GameView.Paused = !GameView.Paused;
+                //GameView.Paused = !GameView.Paused;
             });
 
             mnuPause = new CCMenu(new CCMenuItem[] { mniPause });

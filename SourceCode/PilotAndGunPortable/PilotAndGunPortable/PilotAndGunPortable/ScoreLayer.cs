@@ -5,15 +5,37 @@ namespace PilotAndGunPortable
     public class ScoreLayer : CCLayerColor
     {
         // Define a label variable
-        CCLabel label;
+        CCSprite background;
+
+        CCMenu mnuBack;
+        CCMenuItemImage mniBack;
+
+        CCSprite sprCoin;
 
         public ScoreLayer() : base(CCColor4B.Blue)
         {
-            // create and initialize a Label
-            label = new CCLabel("Score layer", "Fonts/MarkerFelt", 22, CCLabelFormat.SpriteFont);
+            background = new CCSprite("aboutBg.jpg");
+            background.AnchorPoint = CCPoint.AnchorLowerLeft;
+            background.Position = CCPoint.Zero;
+            AddChild(background);
 
-            // add the label as a child to this Layer
-            AddChild(label);
+            mniBack = new CCMenuItemImage(new CCSprite("btnBack.png"), new CCSprite("btnBack.png"), delegate (object obj)
+            {
+                GameView.Director.PushScene(HomeLayer.HomeScene(GameView));
+            });
+            mnuBack = new CCMenu(new CCMenuItem[] { mniBack });
+            mnuBack.AlignItemsVertically();
+
+            AddChild(mnuBack);
+
+            var sprSheet = new CCSpriteSheet("coin.plist");
+            sprCoin = new CCSprite(sprSheet.Frames[0]);
+            var spinningAnimation = new CCAnimation(sprSheet.Frames, 0.05f);
+            var spinningRepeatAnimation = new CCRepeatForever(new CCAnimate(spinningAnimation));
+
+            sprCoin.RunAction(spinningRepeatAnimation);
+
+            AddChild(sprCoin);
         }
 
         protected override void AddedToScene()
@@ -23,8 +45,9 @@ namespace PilotAndGunPortable
             // Use the bounds to layout the positioning of our drawable assets
             var bounds = VisibleBoundsWorldspace;
 
-            // position the label on the center of the screen
-            label.Position = bounds.Center;
+            mnuBack.Position = new CCPoint(VisibleBoundsWorldspace.MaxX - mnuBack.ContentSize.Width / 2 - 10, VisibleBoundsWorldspace.MaxY - mnuBack.ContentSize.Height / 2 - 10);
+
+            sprCoin.Position = new CCPoint(VisibleBoundsWorldspace.Center.X, VisibleBoundsWorldspace.MaxY - sprCoin.ContentSize.Height / 2 - 10);
         }
 
         public static CCScene ScoreScene(CCGameView gameView)
