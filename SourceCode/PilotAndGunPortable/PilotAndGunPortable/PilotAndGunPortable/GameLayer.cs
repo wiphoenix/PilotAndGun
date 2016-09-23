@@ -99,6 +99,14 @@ namespace PilotAndGunPortable
             visileEnemyBullets.RemoveAll(spr => spr.Parent == null);
         }
 
+        private void Explode(CCPoint position)
+        {
+            var explosion = new CCParticleExplosion(position);
+            explosion.TotalParticles = 10;
+            explosion.AutoRemoveOnFinish = true;
+            AddChild(explosion);
+        }
+
         private void CheckCollision()
         {
             RemoveNoParentNodes();
@@ -109,6 +117,7 @@ namespace PilotAndGunPortable
                 bool hit = eb.BoundingBoxTransformedToParent.IntersectsRect(player.BoundingBoxTransformedToParent);
                 if (hit)
                 {
+                    Explode(eb.Position);
                     eb.RemoveFromParent();
                     healthBar.Decrease(eb.Damage);
                 }
@@ -119,6 +128,8 @@ namespace PilotAndGunPortable
                 bool hit = enemy.BoundingBoxTransformedToParent.IntersectsRect(player.BoundingBoxTransformedToParent);
                 if (hit)
                 {
+                    Explode(enemy.Position);
+                    Explode(player.Position);
                     enemy.RemoveFromParent();
                     healthBar.Decrease(1);
                 }
@@ -132,6 +143,7 @@ namespace PilotAndGunPortable
                     bool hit = pb.BoundingBoxTransformedToParent.IntersectsRect(enemy.BoundingBoxTransformedToParent);
                     if (hit)
                     {
+                        Explode(pb.Position);
                         pb.RemoveFromParent();
                         if (enemy is Enemy)
                         {
