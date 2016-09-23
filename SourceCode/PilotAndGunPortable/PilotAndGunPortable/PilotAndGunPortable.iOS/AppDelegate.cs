@@ -13,11 +13,6 @@ namespace PilotAndGunPortable.iOS
     {
         // class-level declarations
 
-        UIWindow window;
-        public static UIStoryboard Storyboard = UIStoryboard.FromName("MainStoryboard", null);
-        public static UIViewController initialViewController;
-
-
         public override UIWindow Window
         {
             get;
@@ -28,11 +23,9 @@ namespace PilotAndGunPortable.iOS
         {
             // Override point for customization after application launch.
             // If not required for your application you can safely delete this method
+
             return true;
         }
-
-
-
 
         public override void OnResignActivation(UIApplication application)
         {

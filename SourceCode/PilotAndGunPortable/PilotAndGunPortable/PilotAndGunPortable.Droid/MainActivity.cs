@@ -14,7 +14,7 @@ using PilotAndGunPortable;
 
 namespace PilotAndGunPortable.Droid
 {
-    [Activity(Label = "PilotAndGunPortable.Droid", MainLauncher = true, Icon = "@drawable/icon", Theme = "@android:style/Theme.Black.NoTitleBar.Fullscreen",
+    [Activity(Label = "Pilot And Gun", MainLauncher = true, Icon = "@drawable/icon", Theme = "@android:style/Theme.Black.NoTitleBar.Fullscreen",
         AlwaysRetainTaskState = true,
         LaunchMode = LaunchMode.SingleInstance,
         ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize | ConfigChanges.Keyboard | ConfigChanges.KeyboardHidden)]
