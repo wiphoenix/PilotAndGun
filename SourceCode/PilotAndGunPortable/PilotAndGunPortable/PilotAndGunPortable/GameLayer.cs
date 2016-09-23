@@ -16,6 +16,7 @@ namespace PilotAndGunPortable
 
         private const int NO_OF_ENEMIES_IN_A_BATCH = 5;
 
+        private const int BACKGROUND_INDEX = 0;
         private const int HEALTH_BAR_INDEX = 1;
         private const int PAUSE_BUTTON_INDEX = 50;
         private const int ENEMY_INDEX = 10;
@@ -43,6 +44,8 @@ namespace PilotAndGunPortable
 
         CCMenu mnuPause;
         CCMenuItemImage mniPause;
+
+        CCParallaxNode parallaxBackground;
 
         public GameLayer() : base(CCColor4B.Black)
         {
@@ -75,6 +78,17 @@ namespace PilotAndGunPortable
 
             //spawn enemies
             Schedule(s => SpawnEnemies(), 2f);
+        }
+
+        private void AddBackground()
+        {
+            float h = VisibleBoundsWorldspace.Size.Height;
+            parallaxBackground = new CCParallaxNode { Position = new CCPoint(0, h) };
+            AddChild(parallaxBackground, BACKGROUND_INDEX);
+
+            var bg = new CCSprite("gameBg.png");
+
+            parallaxBackground.AddChild(bg, 0, new CCPoint(1f, 0), new CCPoint(bg.ContentSize.Width / 2, bg.ContentSize.Height / 2));
         }
 
         private void RemoveNoParentNodes()
@@ -237,6 +251,9 @@ namespace PilotAndGunPortable
         protected override void AddedToScene()
         {
             base.AddedToScene();
+
+            AddBackground();
+
             player.Position = new CCPoint(VisibleBoundsWorldspace.Center.X, player.ContentSize.Height / 2);
             healthBar.Position = CCPoint.Zero;
             lblScore.Position = new CCPoint(0 + 10, VisibleBoundsWorldspace.MaxY - 10);
